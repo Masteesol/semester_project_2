@@ -262,7 +262,7 @@ source: https://cssloaders.github.io/
 
 /*Fonts*/
 .font-special {
-  font-family: pirulen, serif !important;
+  font-family: pirulen, sans-serif !important;
 }
 
 .font-heading {
@@ -270,7 +270,7 @@ source: https://cssloaders.github.io/
 }
 
 .font-quote {
-  font-family: vivaldi, sans-serif !important;
+  font-family: vivaldi, serif !important;
 }
 
 .font-regular {
