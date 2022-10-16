@@ -609,10 +609,6 @@ section {
 }
 
 @media (max-width: 767.98px) {
-  .hero {
-    left: -20rem;
-    width: auto !important;
-  }
   .home.heading {
     top: inherit !important;
     right: inherit !important;
@@ -631,6 +627,13 @@ section {
   }
   .home.logo img {
     width: 5rem !important;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .hero {
+    left: -20rem;
+    width: auto !important;
   }
 }
 
