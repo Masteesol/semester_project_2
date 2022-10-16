@@ -1,0 +1,77 @@
+@import "./colours";
+@import "./components";
+
+body {
+    min-height: 100vh;
+    width: 100vw;
+    margin: 0px;
+    overflow-x: hidden;
+}
+
+html {
+    @extend .scroll-bar-style;
+}
+
+section {
+    min-height: 100vh;
+    width: 100%;
+}
+
+@media (max-width: 312.98px) {
+    
+}
+
+@media (max-width: 575.98px) {
+    .home.heading h2 {
+        font-size: 0.8rem;
+    }
+    .store.logo img{
+        width: 5rem!important;
+    }
+    .store.logo {
+        padding-right: 1rem!important;
+        padding-left: 1rem!important;
+        bottom: 1rem!important;
+    }
+    
+}
+
+.modal-backdrop {
+    z-index: 6000;
+}
+
+@media (max-width: 767.98px){
+   .hero {
+        left: -20rem;
+        width: auto!important;
+   }
+   .home.heading {
+        top: inherit!important;
+        right: inherit!important;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        bottom: 10rem!important;
+   }
+   .home.logo {
+        bottom: inherit!important;
+        top: 1rem;
+   }
+   .home.logo img{
+        width: 5rem!important;
+    }
+}
+
+
+@media (max-width: 991.98px) { 
+
+}
+
+
+@media (max-width: 1199.98px) {  
+
+}
+
+@media only screen and (max-height: 900px) {  
+   
+}

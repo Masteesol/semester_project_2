@@ -1,0 +1,14 @@
+$primary: rgb(58, 84, 99);
+$secondary: rgb(229, 137, 0);
+$primary-variant: rgb(145, 157, 164);
+$light: rgb(227, 227, 227);
+
+$gradient-primary: linear-gradient(#F5F5F5, $primary-variant);
+$gradient-secondary: linear-gradient(45deg, #F5F5F5, $primary);
+$gradient-secondary-variant: linear-gradient(45deg, $primary, #F5F5F5);
+$gradient-hero-overlay: linear-gradient(45deg, rgba(0, 0, 0, 0.0), rgba(90, 151, 187, 0.6));
+
+$bs-dark: 0 0 5px rgb(48, 48, 48);
+$bs-light: 2px 2px 5px 2px #aaaaaa;
+
+$filter-white: invert(95%) sepia(0%) saturate(7480%) hue-rotate(106deg) brightness(107%) contrast(106%);

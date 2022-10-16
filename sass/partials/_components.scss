@@ -1,0 +1,157 @@
+@import "./colours";
+
+
+.scroll-bar-style {
+    scrollbar-color: $primary-variant $primary ;
+    ::-webkit-scrollbar {
+        height: 12px;
+        width: 12px;
+        background: $primary;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: $primary-variant;
+        -webkit-border-radius: 1ex;
+    }
+    ::-webkit-scrollbar-corner {
+        background: $primary-variant;
+    }
+}
+
+.card-cut-primary {
+    background-image: linear-gradient(-135deg, $primary 95%, rgba(118, 64, 64, 0) 1%);
+    border-radius: 1px;
+    border: 0;
+    @extend .scroll-bar-style;
+}
+
+
+@media (min-width: 991.98px) { 
+    .card-cut-primary {
+        scrollbar-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+    ::-webkit-scrollbar, ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-corner {
+        background: rgba(0, 0, 0, 0);
+    }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0);
+    }
+    ::-webkit-scrollbar-corner {
+        background: rgba(0, 0, 0, 0);
+    }
+    }
+}
+
+.card-cut-variant {
+    @extend .card-cut-primary;
+    background-image: linear-gradient(-135deg, $primary-variant 95%, rgba(118, 64, 64, 0) 1%);
+}
+
+
+.grid-card {
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    height: 5rem;
+}
+
+/*loader
+source: https://cssloaders.github.io/
+*/
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    border: 3px solid;
+    border-color: #FFF #FFF transparent transparent;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+  .loader::after,
+  .loader::before {
+    content: '';  
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border: 3px solid;
+    border-color: transparent transparent $secondary $secondary;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: rotationBack 0.5s linear infinite;
+    transform-origin: center center;
+  }
+  .loader::before {
+    width: 32px;
+    height: 32px;
+    border-color: #FFF #FFF transparent transparent;
+    animation: rotation 1.5s linear infinite;
+  }
+      
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  } 
+  @keyframes rotationBack {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+      
+
+/*btn override*/
+
+.btn {
+    border: 2px solid transparent;
+    border-radius: 0;
+}
+
+.btn + .bg-transparent {
+    &:hover, &:active {
+        background-color: $primary!important;
+    }
+}
+
+.btn {
+    &:hover, &:active, &:focus {
+        border: 2px solid white;
+        background-color: rgba(0, 0, 0, 0)!important;
+    }
+}
+
+
+
+.btn-bs-dark {
+      transition: box-shadow 1s ease-in-out!important;
+      -moz-box-shadow: $bs-dark!important;
+      -webkit-box-shadow: $bs-dark!important;
+      box-shadow: $bs-dark!important;
+      &:focus {
+        border: 2px solid transparent!important;
+      }
+      &:hover, &:active, &.active {
+        border: 2px solid transparent!important;
+        -moz-box-shadow: inset $bs-dark!important;
+        -webkit-box-shadow: inset $bs-dark!important;
+        box-shadow: inset $bs-dark!important;
+      } 
+}
+
+
+/*
+.accordion-button::after{
+  color: white;
+}*/

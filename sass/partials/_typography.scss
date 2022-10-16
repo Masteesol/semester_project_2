@@ -1,0 +1,18 @@
+$quote: vivaldi, sans-serif;
+$special: pirulen, sans-serif;
+$regular: roboto, sans-serif!important;
+$headings: archivo-black, sans-serif;
+
+a {
+    text-decoration: none;
+}
+
+/*removing annoying default margins*/
+p, h1, h2, h3, h4, i {
+    margin: 0;
+}
+
+
+body {
+    color: white;
+}

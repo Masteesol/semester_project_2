@@ -1,0 +1,143 @@
+.fade-in {
+    animation: fade-in 0.6s;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+}
+
+.fade-out {
+    animation: fade-out 0.6s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+.blur {
+    -webkit-backdrop-filter: blur(50px);
+    backdrop-filter: blur(50px);
+    filter: blur(50px);
+    background-color: rgba(0, 0, 0, 0.616);
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#body-png-overlay {
+    height: 70vh;
+    min-height: 500px;
+}
+
+$originalPositionLeft: 41.5vw;
+$movedPositionLeft: -15vw;
+$originalPositionTop: 15vh;
+$movedPositionTop: 0vh;
+$originalHeight: 70vh;
+$increasedHeight: 200vh;
+
+.body-scale-up {
+    position: absolute;
+    left: $originalPositionLeft;
+    top: $originalPositionTop;
+    height: $originalHeight;
+    animation-duration: 1s;
+    animation-name: scale-up!important;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1; 
+}
+
+.body-scale-down {
+    @extend .body-scale-up;
+    top: $movedPositionTop;
+    left: $movedPositionLeft;
+    height: $increasedHeight;
+    animation-timing-function: ease-in;
+    animation-name: scale-down!important;
+}
+
+@media (max-width: 991.98px) { 
+    .body-scale-up {
+        animation: fade-out 0.6s!important;
+        animation-timing-function: ease-out!important;
+        animation-fill-mode: forwards!important;
+    }
+    .body-scale-down {
+        opacity: 0;
+    }
+}
+
+@keyframes scale-down {
+    from {
+        top: $movedPositionTop;
+        left: $movedPositionLeft;
+        height: $increasedHeight;
+    }
+    to {
+        top: $originalPositionTop;
+        left: $originalPositionLeft;
+        height: $originalHeight;
+    }
+}
+
+@keyframes scale-up {
+    from {
+        top: $originalPositionTop;
+        left: $originalPositionLeft;
+        height: $originalHeight;
+
+    }
+    to {
+        top: $movedPositionTop;
+        left: $movedPositionLeft;
+        height: $increasedHeight;
+    }
+}
+
+.increase-width {
+    width: 0vw;
+    animation-duration: 1s;
+    animation-name: widen;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+}
+
+@keyframes widen {
+    from {
+        width: 0vw;
+
+    }
+    to {
+        width: 100vw;
+    }
+}
+
+.decrease-width {
+    @extend .increase-width;
+    width: 100vw;
+    animation-delay: 0.3s;
+    animation-name: shrink;
+}
+
+@keyframes shrink {
+    from {
+        width: 100vw;
+
+    }
+    to {
+        width: 0vw;
+    }
+}
