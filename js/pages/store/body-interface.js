@@ -83,15 +83,14 @@ export function interfaceActive(id) {
   toggleOverlay(true, id);
   cardCategoryPreview(interfaceContainer, id);
   addListener(
-    selectElement([['#back-button', "#body-overlay"], '#proceed-button']),
+    selectElement(['#back-button', '#proceed-button']),
     [
       () => {
-        modifyClassNames(selectElement("#body-png-overlay-"+id), "fade-out", "fade-in")
+        modifyClassNames(selectElement("#body-png-overlay-"+id), "fade-out", "fade-in");
         deleteElement("#info-modular-1");
         removeParams("category")
         setTimeout(() => {
           toggleOverlay(false, id);
-          //deleteElement('#body-overlay')
         }, 600)
       }, 
       () => {
@@ -103,6 +102,17 @@ export function interfaceActive(id) {
         }
       ]
   )
+}
+
+function removeCardAndOverlay() {
+  console.log("test")
+  console.log(selectElement("#info-modular-1"))
+  modifyClassNames(selectElement("#body-png-overlay-"+id), "fade-out", "fade-in");
+  deleteElement("#info-modular-1");
+  removeParams("category")
+  setTimeout(() => {
+    toggleOverlay(false, id);
+  }, 600)
 }
 
 export function moveFigure(scaleUp = "increase", id) {
@@ -165,6 +175,4 @@ function toggleOverlay(reveal, catId) {
     modifyClassNames([png, overlay], "d-none");
     modifyClassNames([png], "fade-out", "fade-in");
   }
-  console.log(png)
-
 }
