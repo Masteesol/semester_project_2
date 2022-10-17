@@ -104,17 +104,6 @@ export function interfaceActive(id) {
   )
 }
 
-function removeCardAndOverlay() {
-  console.log("test")
-  console.log(selectElement("#info-modular-1"))
-  modifyClassNames(selectElement("#body-png-overlay-"+id), "fade-out", "fade-in");
-  deleteElement("#info-modular-1");
-  removeParams("category")
-  setTimeout(() => {
-    toggleOverlay(false, id);
-  }, 600)
-}
-
 export function moveFigure(scaleUp = "increase", id) {
   const overlay = selectElement("#body-png-overlay-"+id);
   const png = selectElement("#body-png")
@@ -124,7 +113,7 @@ export function moveFigure(scaleUp = "increase", id) {
   } if(scaleUp === "decrease") {
     modifyClassNames(overlay, "body-scale-down", "body-scale-up");
     setTimeout(() => {
-      modifyClassNames(overlay, "", "body-scale-down");
+      modifyClassNames(overlay, "", "body-scale-down | fade-in");
       modifyClassNames(png, "", "opacity-0");
     }, 1000)
   }
