@@ -699,7 +699,7 @@ section {
   }
 }
 
-#body-png-overlay {
+.body-png-overlay {
   height: 70vh;
   min-height: 500px;
 }

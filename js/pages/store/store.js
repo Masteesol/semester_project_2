@@ -31,7 +31,7 @@ function insertData() {
             modifyClassNames(selectElement("#info-modular-1"), "d-none");
             modifyClassNames(selectElement("#body-png-overlay"), "", "fade-in")
             openProductOverview(id);
-            moveFigure("increase");
+            moveFigure("increase", findParam("category"));
             
         } 
         if(findParam("step") === "1" && findParam("category")) {

@@ -11,9 +11,9 @@ export async function openProductOverview(category) {
     addListener(
         '#back-button-2 | #products-grid', [
                                                 () => {
-                                                    //back to step 1
+                                                //back to step 1
                                                 modifyClassNames("#products-grid", "decrease-width", "increase-width");
-                                                moveFigure("decrease");
+                                                moveFigure("decrease", findParam("category"));
                                                 setTimeout(() => {
                                                     deleteElement("#products-grid"); 
                                                     modifyClassNames("#info-modular-1", "", "d-none")

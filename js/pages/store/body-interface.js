@@ -1,5 +1,6 @@
+import { internalData } from "../../data/internalData.js";
 import { deleteElement, selectElement, createElement, addListener, modifyClassNames } from "../../utils/manage-elements.js";
-import { addParams, modifyParams, removeParams } from "../../utils/url-params.js"
+import { addParams, findParam, modifyParams, removeParams } from "../../utils/url-params.js"
 import cardCategoryPreview from "./card-category-preview.js";
 import { openProductOverview } from "./grid-product-overview.js";
 
@@ -11,6 +12,7 @@ export function bodyInterface() {
   const mapElements = selectElement('#map-coord').childNodes;
   correctMapCoordinates();
   window.addEventListener("resize", correctMapCoordinates)
+  addOverlay();
   mapElements.forEach(element => {
     if(element.className === "body-part") {
       element.addEventListener("click", () => {
@@ -78,71 +80,91 @@ export function interfaceActive(id) {
   //Going from step 1 to step 2
   const interfaceContainer = selectElement('#interface-container');
   modifyClassNames("#prompt", "d-none")
-  addOverlay(interfaceContainer, id);
+  toggleOverlay(true, id);
   cardCategoryPreview(interfaceContainer, id);
-  console.log(selectElement("#body-overlay"))
   addListener(
     selectElement([['#back-button', "#body-overlay"], '#proceed-button']),
     [
       () => {
-        modifyClassNames(selectElement("#body-png-overlay"), "fade-out", "fade-in")
-        deleteElement("#info-modular-1")
+        modifyClassNames(selectElement("#body-png-overlay-"+id), "fade-out", "fade-in")
+        deleteElement("#info-modular-1");
         removeParams("category")
         setTimeout(() => {
-          deleteElement('#body-overlay')
+          toggleOverlay(false, id);
+          //deleteElement('#body-overlay')
         }, 600)
       }, 
       () => {
-          modifyClassNames(selectElement("#body-png-overlay"), "", "fade-in")
+          modifyClassNames(selectElement("#body-png-overlay"), "", "fade-in");
           modifyParams("step", "2");
           modifyClassNames(selectElement("#info-modular-1"), "d-none");
-          moveFigure("increase");
+          moveFigure("increase", id);
           openProductOverview(id);
         }
       ]
   )
 }
 
-export function moveFigure(scaleUp = "increase") {
-  const bodyPng = selectElement("#body-png")
-  const bodyOverlay = selectElement("#body-png-overlay");
+export function moveFigure(scaleUp = "increase", id) {
+  const overlay = selectElement("#body-png-overlay-"+id);
+  const png = selectElement("#body-png")
   if(scaleUp === "increase") {
-    modifyClassNames(bodyOverlay, "body-scale-up")
-    modifyClassNames(bodyPng, "opacity-0");
+    modifyClassNames(overlay, "body-scale-up");
+    modifyClassNames(png, "opacity-0");
   } if(scaleUp === "decrease") {
-    modifyClassNames(bodyOverlay, "body-scale-down", "body-scale-up");
+    modifyClassNames(overlay, "body-scale-down", "body-scale-up");
     setTimeout(() => {
-      modifyClassNames(bodyOverlay, "", "body-scale-down")
-      modifyClassNames(bodyPng, "", "opacity-0")
+      modifyClassNames(overlay, "", "body-scale-down");
+      modifyClassNames(png, "", "opacity-0");
     }, 1000)
   }
 }
 
-export function addOverlay(interfaceContainer, id) {
-  const overlay = createElement("div", ["w-100", "d-flex", "justify-content-center", "align-items-center", "position-absolute"], ["style", "id"], ["height: 100vh; top: 0; overflow: hidden", "body-overlay"]);
-  overlay.innerHTML = `<img src="" alt="active-body-part" id="body-png-overlay" class="pointer fade-in" style="width: auto; z-index: 5000">`;
-      function setSource(fileName) {
+export function addOverlay() {
+  const overlay = createElement("div", ["w-100", "d-flex", "justify-content-center", "align-items-center", "position-absolute", "d-none"], 
+  ["style", "id"], ["height: 100vh; top: 0; overflow: hidden", "body-overlay"]);
+  internalData.forEach(item => {
+    const id = item[0];
+    const imageElement = createElement("img", "pointer fade-in d-none body-png-overlay", "id | style | alt", [`body-png-overlay-${id}`, "width: auto; z-index: 5000", "active-body-part"])
+    //const template = `<img src="${id}" alt="active-body-part" id="body-png-overlay-${id}" class="pointer fade-in d-none" style="width: auto; z-index: 5000">`
+    overlay.append(imageElement)
+    function setSource(fileName) {
         const path = "../../media/icon-man-body-parts/"
-        overlay.firstChild.src = path + fileName;
-      }
-      switch(id) {
-        case("head"):
-          setSource("active_head.png");
-          break
-        case("torso"):
-          setSource("active_torso.png");
-          break
-        case("arms"):
-          setSource("active_arms.png");
-          break
-        case("legs"):
-          setSource("active_legs.png");
-          break
-        case("chest"):
-          setSource("active_chest.png");
-          break
-        default:
-          setSource("");
-      }
-      interfaceContainer.append(overlay)
+        imageElement.src = path + fileName;
+    }
+    switch(id) {
+      case("head"):
+        setSource("active_head.png");
+        break
+      case("torso"):
+        setSource("active_torso.png");
+        break
+      case("arms"):
+        setSource("active_arms.png");
+        break
+      case("legs"):
+        setSource("active_legs.png");
+        break
+      case("chest"):
+        setSource("active_chest.png");
+        break
+      default:
+        setSource("");
+    }
+  })
+  selectElement('#interface-container').append(overlay)
+}
+
+function toggleOverlay(reveal, catId) {
+  const overlay = selectElement("#body-overlay");
+  const png = selectElement("#body-png-overlay-"+catId);
+  if(reveal) {
+    modifyClassNames([png, overlay], "", "d-none");
+    modifyClassNames(png, "fade-in", "fade-out");
+  } else {
+    modifyClassNames([png, overlay], "d-none");
+    modifyClassNames([png], "fade-out", "fade-in");
+  }
+  console.log(png)
+
 }
