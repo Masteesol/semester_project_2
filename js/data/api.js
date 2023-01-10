@@ -1,4 +1,4 @@
-const base = "https://strapi-sp2-marius-solheim.herokuapp.com/api/";
+const base = "https://marius-backend-general.herokuapp.com/api/";
 
 export async function getApi(path, token = null) {
   try {
@@ -48,5 +48,5 @@ export async function api(data, headers, endPoint = "", method) {
 }
 
 export function stringify(data) {
-  return JSON.stringify({data: data});
+  return JSON.stringify({ data: data });
 }
