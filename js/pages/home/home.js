@@ -1,30 +1,44 @@
-import { getApi } from "../../data/api.js";
 import { findValue } from "../../data/internalData.js";
-import { createElement, modifyClassNames, selectElement } from "../../utils/manage-elements.js";
+import {
+  createElement,
+  modifyClassNames,
+  selectElement,
+} from "../../utils/manage-elements.js";
+import baseUrl from "../../data/api.js";
 
-export default async function() {
-    try {
-        
-        const json = await getApi("products?filters[featured][$eq]=true");
-        const data = json.data;
-        modifyClassNames(".loader-container", "d-none");
-        createFeaturedHTML(data)
-    } catch (error) {
-        console.log(error)
-    }
+export default async function () {
+  try {
+    const res = await fetch(baseUrl + "products?filters[featured][$eq]=true");
+    const json = await res.json();
+    const data = json.data;
+    modifyClassNames(".loader-container", "d-none");
+    createFeaturedHTML(data);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export function createFeaturedHTML(data) {
-    const container = selectElement("#featured-products");
-    const containerInner = createElement("div", "container", "", "", "", `<div class="mb-3"><h3 class="font-heading">Featured Products</h3></div>`);
-    const row = createElement("div", "row");
-    data.forEach((data, index) => {
-        const {category, image_url, title, description, tag} = data.attributes;
-        if(tag === "base" && index === 0) {
-            let descriptionModified = description.replaceAll("#", "");
-            descriptionModified = descriptionModified.replaceAll("##", "");
-            const summary = description.substring(description.indexOf("#")+1, description.indexOf("##"))
-            const templateMain = `
+  const container = selectElement("#featured-products");
+  const containerInner = createElement(
+    "div",
+    "container",
+    "",
+    "",
+    "",
+    `<div class="mb-3"><h3 class="font-heading">Featured Products</h3></div>`
+  );
+  const row = createElement("div", "row");
+  data.forEach((data, index) => {
+    const { category, image_url, title, description, tag } = data.attributes;
+    if (tag === "base" && index === 0) {
+      let descriptionModified = description.replaceAll("#", "");
+      descriptionModified = descriptionModified.replaceAll("##", "");
+      const summary = description.substring(
+        description.indexOf("#") + 1,
+        description.indexOf("##")
+      );
+      const templateMain = `
             <div class="mb-4" id="main-featured">
                 <div class="featured bg-gradient-card w-100 d-flex flex-column-reverse justify-content-around flex-lg-row px-3" style="min-height: 100vh;">
                     <div class="w-lg-100 d-flex flex-column justify-content-center" style="width: 50%">
@@ -41,17 +55,19 @@ export function createFeaturedHTML(data) {
                     </div>
                 </div>
             </div>`;
-            container.append(createElement("div", "mb-4", "id", "main-featured", "", templateMain));
-        } else {
-            let imageSrc = findValue("iconSource", category);
-            let filter = "filter-white";
-            let bg = "card-cut-variant";
-            if(tag === "base") {
-                filter = "";
-                bg = "bg-gradient-card-variant"
-                imageSrc = image_url;
-            }
-            const templateCard =  `
+      container.append(
+        createElement("div", "mb-4", "id", "main-featured", "", templateMain)
+      );
+    } else {
+      let imageSrc = findValue("iconSource", category);
+      let filter = "filter-white";
+      let bg = "card-cut-variant";
+      if (tag === "base") {
+        filter = "";
+        bg = "bg-gradient-card-variant";
+        imageSrc = image_url;
+      }
+      const templateCard = `
                                 <div class="card-container col-3 mx-auto m-screen-w-90" style="width: 20.5rem; height: 20rem">
                                     <a href="details.html?id=${data.id}&category=${category}">
                                         <div class="${bg} p-4 d-flex flex-column align-items-center" style="height: 12rem;">
@@ -61,9 +77,9 @@ export function createFeaturedHTML(data) {
                                     </a>
                                 </div>
                                 `;
-            row.innerHTML += templateCard;
-        }
-    })
-    containerInner.append(row);
-   container.append(containerInner)
+      row.innerHTML += templateCard;
+    }
+  });
+  containerInner.append(row);
+  container.append(containerInner);
 }

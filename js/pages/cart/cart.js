@@ -1,39 +1,43 @@
 import icons from "../../components/modal-purchasing/icons.js";
-import { getApi } from "../../data/api.js";
 import { findValue } from "../../data/internalData.js";
-import { addListener, selectElement, modifyClassNames, createElement } from "../../utils/manage-elements.js";
-import { inCart,setLocalStorage } from "../../utils/storage.js";
+import {
+  addListener,
+  selectElement,
+  modifyClassNames,
+  createElement,
+} from "../../utils/manage-elements.js";
+import { inCart, setLocalStorage } from "../../utils/storage.js";
+import baseUrl from "../../data/api.js";
+export default async function () {
+  try {
+    console.log(inCart);
+    selectElement("main").insertAdjacentElement("afterbegin", icons());
+    if (inCart.length > 0) {
+      let queryString = "?";
+      inCart.forEach((id, index) => {
+        queryString += `filters[id][$in][${index}]=${id}`;
+        if (index < inCart.length - 1) {
+          queryString += "&";
+        }
+      });
+      const res = await fetch(baseUrl + "products" + queryString);
+      const json = await res.json();
+      const data = json.data;
+      modifyClassNames(".loader-container", "d-none");
 
-export default async function() {
-    try {
-        console.log(inCart)
-        selectElement("main").insertAdjacentElement("afterbegin", icons());
-        if(inCart.length > 0) {
-            let queryString = "?";
-            inCart.forEach((id, index) => {
-                queryString += `filters[id][$in][${index}]=${id}`
-                if(index < inCart.length-1) {
-                    queryString += "&";
-                }
-            })
-            const json = await getApi("products"+queryString);
-            const data = json.data;
-            modifyClassNames(".loader-container", "d-none");
-            
-        
-            let total = 0;
-            const cards = data.map(data => {
-                            const {title, price, image_url, tag, category} = data.attributes
-                            total += price;
-                            let imageSrc = findValue("iconSource", category);
-                            let filter = "filter-white";
-                            let bg = "card-cut-variant";
-                            if(tag === "base") {
-                                filter = "";
-                                bg = "bg-gradient-card-variant"
-                                imageSrc = image_url;
-                            }
-                            const templateCard =  `                                      
+      let total = 0;
+      const cards = data.map((data) => {
+        const { title, price = 50, image_url, tag, category } = data.attributes;
+        total += price;
+        let imageSrc = findValue("iconSource", category);
+        let filter = "filter-white";
+        let bg = "card-cut-variant";
+        if (tag === "base") {
+          filter = "";
+          bg = "bg-gradient-card-variant";
+          imageSrc = image_url;
+        }
+        const templateCard = `                                      
                                                         <h3 class="h5 font-heading text-center my-4">${title}</h3>
                                                         <a href="details.html?id=${data.id}&category=${category}">
                                                             <div class="card-cut d-flex-centering ${bg}" style="width: 15.5rem; height: 15rem">
@@ -45,11 +49,18 @@ export default async function() {
                                                             <button class="btn bg-primary fa-thin fa-x text-white" id="remove-${data.id}" data=${data.id}>
                                                             </button>
                                                         </div>`;
-                            const container = createElement("div", "card-container text-primary", "style | data", `width: 15.5rem; | ${data.id}`, "", templateCard)
-                            return container;
-            })
-        
-            const template = `
+        const container = createElement(
+          "div",
+          "card-container text-primary",
+          "style | data",
+          `width: 15.5rem; | ${data.id}`,
+          "",
+          templateCard
+        );
+        return container;
+      });
+
+      const template = `
                         <div name="cart-container" id="cart-container" class="w-100 p-3 d-flex flex-column flex-md-row justify-content-between fade-in" style="height: 70vh;">
                             <div name="left-column" class="d-flex flex-column align-items-center w-lg-100" id="left-column" style="width: 50%">
                             </div>
@@ -69,38 +80,47 @@ export default async function() {
                             </div>
                     </div>
                             `;
-                selectElement("#card-container").innerHTML += template;
+      selectElement("#card-container").innerHTML += template;
 
-                cards.forEach(card => selectElement("#left-column").append(card))
-                addListener("#left-column", (e) => removeFromCart(e))
-        } else {
-            modifyClassNames(".loader-container", "d-none");
-            emptyCartText()
-        }
-        addListener("#back-button-4", () => location.replace("/store.html"))
-        
-    } catch (error) {
-        console.log(error)
+      cards.forEach((card) => selectElement("#left-column").append(card));
+      addListener("#left-column", (e) => removeFromCart(e));
+    } else {
+      modifyClassNames(".loader-container", "d-none");
+      emptyCartText();
     }
+    addListener("#back-button-4", () => location.replace("/store.html"));
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function removeFromCart(e) {
-    if(e.target.id.includes("remove")) {
-        const strapiID = parseInt(e.target.getAttribute("data"));
-        inCart.splice(inCart.indexOf(strapiID), 1)
-        setLocalStorage("product", inCart);
-        const total = parseInt(selectElement("#total-price").innerText);
-        const itemPrice = parseInt(selectElement("#item-price-"+e.target.getAttribute("data")).innerText);
-        selectElement("#total-price").innerText = total - itemPrice;
-        selectElement(`.card-container[data="${strapiID}"]`).remove();
-        if(inCart.length === 0) {
-            selectElement(`#cart-container`).remove();
-            emptyCartText()
-            
-        }
+  if (e.target.id.includes("remove")) {
+    const strapiID = parseInt(e.target.getAttribute("data"));
+    inCart.splice(inCart.indexOf(strapiID), 1);
+    setLocalStorage("product", inCart);
+    const total = parseInt(selectElement("#total-price").innerText);
+    const itemPrice = parseInt(
+      selectElement("#item-price-" + e.target.getAttribute("data")).innerText
+    );
+    selectElement("#total-price").innerText = total - itemPrice;
+    selectElement(`.card-container[data="${strapiID}"]`).remove();
+    if (inCart.length === 0) {
+      selectElement(`#cart-container`).remove();
+      emptyCartText();
     }
+  }
 }
 
 function emptyCartText() {
-   selectElement("#card-container").append(createElement("div", "w-100 d-flex-centering text-primary","", "", "", `<h2 class="text-heading">Empty Cart</h2>`))
+  selectElement("#card-container").append(
+    createElement(
+      "div",
+      "w-100 d-flex-centering text-primary",
+      "",
+      "",
+      "",
+      `<h2 class="text-heading">Empty Cart</h2>`
+    )
+  );
 }

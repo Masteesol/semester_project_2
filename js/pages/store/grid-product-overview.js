@@ -6,12 +6,15 @@ import {
   addListener,
   modifyClassNames,
 } from "../../utils/manage-elements.js";
-import { getApi } from "../../data/api.js";
 import { moveFigure } from "./body-interface.js";
 import { findParam, setParams } from "../../utils/url-params.js";
+import baseUrl from "../../data/api.js";
 
 export async function openProductOverview(category) {
-  const json = await getApi("products?filters[category][$eq]=" + category);
+  const res = await fetch(
+    baseUrl + "products?filters[category][$eq]=" + category
+  );
+  const json = await res.json();
   const data = json.data;
   selectElement("#body-interface").insertAdjacentElement(
     "beforebegin",

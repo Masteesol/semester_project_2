@@ -1,4 +1,4 @@
-const base = "https://marius-backend-general.herokuapp.com/api/";
+export default "https://marius-backend-general.herokuapp.com/api/";
 
 export async function getApi(path, token = null) {
   try {
@@ -12,13 +12,28 @@ export async function getApi(path, token = null) {
       });
       return await response.json();
     } else {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       return await response.json();
     }
   } catch (error) {
     console.log(`Error message is: ${error}`);
   }
 }
+
+/*export async function getApi(path) {
+  try {
+    const url = base + path;
+    const res = await fetch(url);
+    return await res.json();
+  } catch (e) {
+    console.log(e);
+  }
+}*/
 
 export async function api(data, headers, endPoint = "", method) {
   const url = base + endPoint;
