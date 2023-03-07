@@ -27,7 +27,7 @@ function main() {
   }
 
   switch (window.location.pathname) {
-    case "/index.html" || "/":
+    case "/index.html":
       home();
       break;
     case "/store.html":
@@ -43,7 +43,7 @@ function main() {
       admin();
       break;
     default:
-      console.log("/index.html");
+      window.location.replace("/index.html");
   }
 }
 
