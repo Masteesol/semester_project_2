@@ -43,7 +43,7 @@ function main() {
       admin();
       break;
     default:
-      console.log("nothing here");
+      console.log("/index.html");
   }
 }
 
