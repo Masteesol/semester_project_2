@@ -27,7 +27,7 @@ function main() {
   }
 
   switch (window.location.pathname) {
-    case "/index.html":
+    case "/index.html" || "/":
       home();
       break;
     case "/store.html":
